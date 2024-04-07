@@ -6,29 +6,31 @@ from datetime import datetime
 import time
 import base64
 from st_aggrid import AgGrid, GridOptionsBuilder
+from login_page import login_page
 
 
 st.set_page_config(layout='wide')
 
 
-# Add CSS style
-st.write(
-    """
-    <style>
-    .filter-1 { background-color: #ffcccb; } /* Light red */
-    .filter-2 { background-color: #ffebcd; } /* Blanched almond */
-    .filter-3 { background-color: #f0e68c; } /* Khaki */
-    .filter-4 { background-color: #add8e6; } /* Light blue */
-    </style>
-    """,
-    unsafe_allow_html=True,
-)
 
-# Initialise session state to store input data
-if 'wastage_data' not in st.session_state:
-    st.session_state.wastage_data = []
-if 'variance_data' not in st.session_state:
-    st.session_state.variance_data = []
+# # Add CSS style
+# st.write(
+#     """
+#     <style>
+#     .filter-1 { background-color: #ffcccb; } /* Light red */
+#     .filter-2 { background-color: #ffebcd; } /* Blanched almond */
+#     .filter-3 { background-color: #f0e68c; } /* Khaki */
+#     .filter-4 { background-color: #add8e6; } /* Light blue */
+#     </style>
+#     """,
+#     unsafe_allow_html=True,
+# )
+
+# # Initialise session state to store input data
+# if 'wastage_data' not in st.session_state:
+#     st.session_state.wastage_data = []
+# if 'variance_data' not in st.session_state:
+#     st.session_state.variance_data = []
 
 ########################################################################################################
 ##########################                      LOAD AND FILTER         ################################
@@ -350,7 +352,6 @@ def check_inventory_needs(df, items_info):
 ##########################                    MAIN FUNCTION             ################################
 ########################################################################################################
 
-
 def main():
     st.title('Good morning!')
 
@@ -450,10 +451,15 @@ def main():
                 supplier_order_df = check_inventory_needs(df, items_info_supplier)
                 st.dataframe(supplier_order_df)
 
+# Initialize session state for login status
+if 'logged_in' not in st.session_state:
+    st.session_state['logged_in'] = False
 
-if __name__ == "__main__":
+# Conditional logic to display the login page or the main app content
+if not st.session_state['logged_in']:
+    login_page()  # Show login page if not logged in
+else:
     main()
-
 
 
 
